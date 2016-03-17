@@ -95,56 +95,57 @@
           });
         };
 
-        scope.goPrevious = function() {
+        scope.$on('goPrevious', function() {
           if (scope.pageToDisplay <= 1) {
             return;
           }
           scope.pageToDisplay = parseInt(scope.pageToDisplay) - 1;
           scope.pageNum = scope.pageToDisplay;
-        };
+        });
 
-        scope.goNext = function() {
+        scope.$on('goNext', function() {
           if (scope.pageToDisplay >= pdfDoc.numPages) {
             return;
           }
           scope.pageToDisplay = parseInt(scope.pageToDisplay) + 1;
           scope.pageNum = scope.pageToDisplay;
-        };
+        });
 
-        scope.zoomIn = function() {
+        scope.$on('zoomIn', function() {
           pageFit = false;
           scale = parseFloat(scale) + 0.2;
           scope.renderPage(scope.pageToDisplay);
           return scale;
-        };
+        });
 
-        scope.zoomOut = function() {
+        scope.$on('zoomOut', function(){
           pageFit = false;
           scale = parseFloat(scale) - 0.2;
           scope.renderPage(scope.pageToDisplay);
           return scale;
-        };
+        });
 
-        scope.fit = function() {
+        //scope.fit = function() {
+        scope.$on('fit', function(){
           pageFit = true;
           scope.renderPage(scope.pageToDisplay);
-        }
+        });
 
-        scope.changePage = function() {
+      scope.$on('changePage', function(){
           scope.renderPage(scope.pageToDisplay);
-        };
+        });
 
-        scope.rotate = function() {
-          if (canvas.getAttribute('class') === 'rotate0') {
-            canvas.setAttribute('class', 'rotate90');
-          } else if (canvas.getAttribute('class') === 'rotate90') {
-            canvas.setAttribute('class', 'rotate180');
-          } else if (canvas.getAttribute('class') === 'rotate180') {
-            canvas.setAttribute('class', 'rotate270');
-          } else {
-            canvas.setAttribute('class', 'rotate0');
-          }
-        };
+        scope.$on('rotate', function(){
+            if (canvas.getAttribute('class') === 'rotate0') {
+                canvas.setAttribute('class', 'rotate90');
+            } else if (canvas.getAttribute('class') === 'rotate90') {
+                canvas.setAttribute('class', 'rotate180');
+            } else if (canvas.getAttribute('class') === 'rotate180') {
+                canvas.setAttribute('class', 'rotate270');
+            } else {
+                canvas.setAttribute('class', 'rotate0');
+            }
+        });
 
         function clearCanvas() {
           if (ctx) {
