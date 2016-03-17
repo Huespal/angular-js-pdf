@@ -6,7 +6,7 @@
   "description": "An Angularjs directive <ng-pdf> to display PDF in the browser with PDFJS.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sayanee/angular-pdf.git"
+    "url": "https://github.com/Huespal/angular-js-pdf.git"
   },
   "keywords": [
     "pdf",
