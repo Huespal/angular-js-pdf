@@ -57,7 +57,7 @@
         });
 
         PDFJS.disableWorker = true;
-        scope.pageNum = pageToDisplay;
+        scope.$parent.pageNum = pageToDisplay;
 
         scope.renderPage = function(num) {
           if (renderTask) {
@@ -96,43 +96,42 @@
         };
 
         scope.$on('goPrevious', function() {
-          if (scope.pageToDisplay <= 1) {
+          if (scope.$parent.pageToDisplay <= 1) {
             return;
           }
-          scope.pageToDisplay = parseInt(scope.pageToDisplay) - 1;
-          scope.pageNum = scope.pageToDisplay;
+          scope.$parent.pageToDisplay = parseInt(scope.$parent.pageToDisplay) - 1;
+          scope.$parent.pageNum = scope.$parent.pageToDisplay;
         });
 
         scope.$on('goNext', function() {
-          if (scope.pageToDisplay >= pdfDoc.numPages) {
+          if (scope.$parent.pageToDisplay >= pdfDoc.numPages) {
             return;
           }
-          scope.pageToDisplay = parseInt(scope.pageToDisplay) + 1;
-          scope.pageNum = scope.pageToDisplay;
+          scope.$parent.pageToDisplay = parseInt(scope.$parent.pageToDisplay) + 1;
+          scope.$parent.pageNum = scope.$parent.pageToDisplay;
         });
 
         scope.$on('zoomIn', function() {
           pageFit = false;
           scale = parseFloat(scale) + 0.2;
-          scope.renderPage(scope.pageToDisplay);
+          scope.renderPage(scope.$parent.pageToDisplay);
           return scale;
         });
 
         scope.$on('zoomOut', function(){
           pageFit = false;
           scale = parseFloat(scale) - 0.2;
-          scope.renderPage(scope.pageToDisplay);
+          scope.renderPage(scope.$parent.pageToDisplay);
           return scale;
         });
 
-        //scope.fit = function() {
         scope.$on('fit', function(){
           pageFit = true;
-          scope.renderPage(scope.pageToDisplay);
+          scope.renderPage(scope.$parent.pageToDisplay);
         });
 
-      scope.$on('changePage', function(){
-          scope.renderPage(scope.pageToDisplay);
+        scope.$on('changePage', function(){
+          scope.renderPage(scope.$parent.pageToDisplay);
         });
 
         scope.$on('rotate', function(){
@@ -174,10 +173,10 @@
                   }
 
                   pdfDoc = _pdfDoc;
-                  scope.renderPage(scope.pageToDisplay);
+                  scope.renderPage(scope.$parent.pageToDisplay);
 
                   scope.$apply(function() {
-                    scope.pageCount = _pdfDoc.numPages;
+                    scope.$parent.pageCount = _pdfDoc.numPages;
                   });
                 }, function(error) {
                   if (error) {
@@ -190,10 +189,18 @@
           }
         }
 
+        //scope.$on('pageNum', function(newVal){
+        // TODO
+        //    scope.$parent.pageToDisplay = parseInt(newVal);
+        //    if (pdfDoc !== null) {
+        //        scope.renderPage(scope.$parent.pageToDisplay);
+        //    }
+        //});
+
         scope.$watch('pageNum', function(newVal) {
-          scope.pageToDisplay = parseInt(newVal);
+          scope.$parent.pageToDisplay = parseInt(newVal);
           if (pdfDoc !== null) {
-            scope.renderPage(scope.pageToDisplay);
+            scope.renderPage(scope.$parent.pageToDisplay);
           }
         });
 
@@ -203,7 +210,7 @@
               console.log('pdfUrl value change detected: ', scope.pdfUrl);
             }
             url = newVal;
-            scope.pageNum = scope.pageToDisplay = pageToDisplay;
+            scope.$parent.pageNum = scope.$parent.pageToDisplay = pageToDisplay;
             if (pdfLoaderTask) {
                 pdfLoaderTask.destroy().then(function () {
                     renderPDF();
